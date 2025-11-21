@@ -1,0 +1,10 @@
+✔ User
+✔ Role
+✔ Language
+✔ UserLanguage (si tu veux encore)
+✔ VocabularyList
+✔ Flashcard
+✔ Translation
+✔ ExampleSentence
+✔ Subscription
+✔ Review (SRS)
