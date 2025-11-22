@@ -1,41 +1,67 @@
 pipeline {
-    agent any
+	agent any
 
-    tools {
-        maven 'Maven3'
-        jdk 'JDK21'
-    }
+	environment {
+		// Définit le chemin du wrapper Gradle (facultatif si déjà exécutable)
+		GRADLE_CMD = isUnix() ? './gradlew' : 'gradlew.bat'
+	}
 
-    stages {
+	stages {
+		stage('Checkout') {
+			steps {
+				checkout scm
+			}
+		}
 
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Epestia/Spring-Language.git'
-            }
-        }
+		stage('Build') {
+			steps {
+				script {
+					if (isUnix()) {
+						sh "${GRADLE_CMD} build -x test"
+					} else {
+						bat "${GRADLE_CMD} build -x test"
+					}
+				}
+			}
+		}
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean install -DskipTests'
-            }
-        }
+		stage('Test') {
+			steps {
+				script {
+					if (isUnix()) {
+						sh "${GRADLE_CMD} test"
+					} else {
+						bat "${GRADLE_CMD} test"
+					}
+				}
+			}
+		}
 
-        stage('Tests') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+		stage('Package') {
+			steps {
+				script {
+					if (isUnix()) {
+						sh "${GRADLE_CMD} bootJar"
+					} else {
+						bat "${GRADLE_CMD} bootJar"
+					}
+				}
+			}
+		}
 
-        stage('Package') {
-            steps {
-                sh 'mvn package -DskipTests'
-            }
-        }
+		stage('Archive Artifact') {
+			steps {
+				archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+			}
+		}
+	}
 
-        stage('Archive Artifact') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            }
-        }
-    }
+	post {
+		success {
+			echo '✅ Build, tests et packaging terminés avec succès !'
+		}
+		failure {
+			echo '❌ Build échoué, vérifie le log pour les erreurs.'
+		}
+	}
 }
