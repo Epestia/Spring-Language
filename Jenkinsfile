@@ -1,11 +1,6 @@
 pipeline {
 	agent any
 
-	environment {
-		// Définit le chemin du wrapper Gradle (facultatif si déjà exécutable)
-		GRADLE_CMD = isUnix() ? './gradlew' : 'gradlew.bat'
-	}
-
 	stages {
 		stage('Checkout') {
 			steps {
@@ -17,9 +12,9 @@ pipeline {
 			steps {
 				script {
 					if (isUnix()) {
-						sh "${GRADLE_CMD} build -x test"
+						sh './gradlew build -x test'
 					} else {
-						bat "${GRADLE_CMD} build -x test"
+						bat 'gradlew.bat build -x test'
 					}
 				}
 			}
@@ -29,9 +24,9 @@ pipeline {
 			steps {
 				script {
 					if (isUnix()) {
-						sh "${GRADLE_CMD} test"
+						sh './gradlew test'
 					} else {
-						bat "${GRADLE_CMD} test"
+						bat 'gradlew.bat test'
 					}
 				}
 			}
@@ -41,9 +36,9 @@ pipeline {
 			steps {
 				script {
 					if (isUnix()) {
-						sh "${GRADLE_CMD} bootJar"
+						sh './gradlew bootJar'
 					} else {
-						bat "${GRADLE_CMD} bootJar"
+						bat 'gradlew.bat bootJar'
 					}
 				}
 			}
@@ -58,10 +53,10 @@ pipeline {
 
 	post {
 		success {
-			echo '✅ Build, tests et packaging terminés avec succès !'
+			echo '✅ Build et packaging terminés !'
 		}
 		failure {
-			echo '❌ Build échoué, vérifie le log pour les erreurs.'
+			echo '❌ Build échoué.'
 		}
 	}
 }
