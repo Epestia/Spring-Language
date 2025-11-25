@@ -1,5 +1,6 @@
 package be.ipam.language.config.security.config;
 
+
 import be.ipam.language.config.security.jwt.JwtAuthenticationFilter;
 import be.ipam.language.config.security.userdetails.services.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,7 @@ public class SecurityConfig {
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
