@@ -6,7 +6,7 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface LanguageEntityMapper {
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     LanguageEntity toEntity(LanguageEntityDto languageEntityDto);
 
     LanguageEntityDto toDto(LanguageEntity languageEntity);
