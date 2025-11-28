@@ -2,11 +2,16 @@ package be.ipam.language.dao.entities;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Entity
+@Getter
+@Setter
+@Table(name = "VocabularyList")
 public class VocabularyListEntity {
 
     @Id
@@ -29,6 +34,9 @@ public class VocabularyListEntity {
 
     @Column(nullable = false)
     private boolean isPublic;
+
+    @Column(nullable = false)
+    private boolean isValidated;
 
     private LocalDate createdAt = LocalDate.now();
 

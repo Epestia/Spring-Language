@@ -33,12 +33,13 @@ public class UserService implements IUserService {
     @Override
     public UserEntity findUserById(Long id) throws UserException {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserException("User non trouvé avec l'ID: " + id));
+                .orElseThrow(() -> new UserException("User not found with ID: " + id));
     }
 
     @Override
     @Transactional
     public UserEntity saveUser(UserEntity user) {
+
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
@@ -49,17 +50,17 @@ public class UserService implements IUserService {
         if (transientRoles != null && !transientRoles.isEmpty()) {
             for (RoleEntity role : transientRoles) {
                 if (role == null || role.getName() == null || role.getName().trim().isEmpty()) {
-                    throw new RuntimeException("Le rôle fourni est vide ou invalide.");
+                    throw new RuntimeException("Provided role is empty or invalid.");
                 }
 
                 RoleEntity existingRole = roleRepository.findByName(role.getName())
-                        .orElseThrow(() -> new RuntimeException("Rôle '" + role.getName() + "' non trouvé en base de données."));
+                        .orElseThrow(() -> new RuntimeException("Role '" + role.getName() + "' not found in the database."));
 
                 persistentRoles.add(existingRole);
             }
         } else {
             RoleEntity defaultRole = roleRepository.findByName("USER")
-                    .orElseThrow(() -> new RuntimeException("Rôle par défaut 'USER' non trouvé en base de données."));
+                    .orElseThrow(() -> new RuntimeException("Default role 'USER' not found in the database."));
             persistentRoles.add(defaultRole);
         }
 
@@ -70,7 +71,7 @@ public class UserService implements IUserService {
     @Override
     public void deleteUser(Long id) throws UserException {
         if (!userRepository.existsById(id)) {
-            throw new UserException("Impossible de supprimer. User non trouvé avec l'ID: " + id);
+            throw new UserException("Cannot delete. User not found with ID: " + id);
         }
         userRepository.deleteById(id);
     }
@@ -78,7 +79,7 @@ public class UserService implements IUserService {
     @Override
     public UserEntity findByEmail(String email) throws UserException {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException("Utilisateur non trouvé avec l'email: " + email));
+                .orElseThrow(() -> new UserException("User not found with email: " + email));
     }
 
     public RoleEntity findRoleByName(String name) {

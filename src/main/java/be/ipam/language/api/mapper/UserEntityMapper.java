@@ -11,7 +11,7 @@ import org.mapstruct.*;
 )
 public interface UserEntityMapper {
 
-    //@Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     UserEntity toEntity(UserEntityDto userEntityDto);
 
     UserEntityDto toDto(UserEntity userEntity);

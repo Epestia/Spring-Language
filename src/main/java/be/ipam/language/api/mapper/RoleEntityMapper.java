@@ -9,7 +9,7 @@ import org.mapstruct.*;
         componentModel = MappingConstants.ComponentModel.SPRING
 )
 public interface RoleEntityMapper {
-    //@Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     RoleEntity toEntity(RoleEntityDto roleEntityDto);
 
     RoleEntityDto toDto(RoleEntity roleEntity);

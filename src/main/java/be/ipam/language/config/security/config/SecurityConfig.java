@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/languages/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/test-error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/languages/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/languages/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/languages/**").hasRole("ADMIN")
